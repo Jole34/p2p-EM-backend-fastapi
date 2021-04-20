@@ -1,0 +1,6 @@
+alembic==1.4.3
+pydantic==1.7.3
+python-dotenv==0.15.0
+psycopg2==2.8.6
+sqlalchemy-json==0.4.0
+requests==2.25.0
