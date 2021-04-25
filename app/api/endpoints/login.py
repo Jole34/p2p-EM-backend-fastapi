@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 from typing import Any
 
-import schemas
-
+from app import schemas
 router = APIRouter()
 
 @router.post('/')
