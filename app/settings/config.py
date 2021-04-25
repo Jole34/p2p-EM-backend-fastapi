@@ -2,12 +2,11 @@ from pydantic import BaseSettings, PostgresDsn, validator
 from typing import Optional, Dict, Any
 
 class Settings(BaseSettings):
-  POSTGRES_SERVER: str
-  POSTGRES_USER: str
-  POSTGRES_PASSWORD: str
-  POSTGRES_DB: str
-  POSTGRES_DB_PORT: str
-  SQLALCHEMY_DATABASE_URI: Optional[str] = None
+    POSTGRES_SERVER: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
+    SQLALCHEMY_DATABASE_URI: Optional[str] = None
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection_sandbox(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
