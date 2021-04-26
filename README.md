@@ -5,5 +5,5 @@ pip install -r requirments-dev.txt
 
 ## Additional info:
     Alembic used for automatic migrations
-    Postgres db on local
+    Postgres db on local/production
     
