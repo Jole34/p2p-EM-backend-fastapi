@@ -4,11 +4,12 @@ from typing import Any, Dict, Optional, Union, List
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from datetime import datetime
-from models import User
+
+import models
 import schemas
 class CRUDUser():
     def create(self, db: Session, obj_in: schemas.User) -> Optional[User]:
-            db_obj = User(
+            db_obj = models.User(
                 name=obj_in.name,
                 last_name=obj_in.last_name,
                 email=obj_in.email,
