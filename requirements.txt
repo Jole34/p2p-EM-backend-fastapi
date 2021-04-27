@@ -13,4 +13,3 @@ python-multipart==0.0.5
 jinja2==2.11.2
 uvloop
 httptools
-python-multipart
