@@ -1,1 +1,1 @@
-web: uvicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
+web: uvicorn -uvicorn main:app --reloadeload --app-dir app
