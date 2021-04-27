@@ -7,3 +7,5 @@ pip install -r requirments-dev.txt
     Alembic used for automatic migrations
     Postgres db on local/production
     
+## To run on local:
+    uvicorn main:app --reloadeload --app-dir app
