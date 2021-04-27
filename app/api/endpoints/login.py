@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Any
 from app import db
-from db.session import SessionLocal
+
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette.requests import Request
 
 from app import schemas
 from app import crud
 
+import db
 import traceback
 router = APIRouter()
 
@@ -17,7 +18,7 @@ def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()) ->
 
 @router.post('/create-user/', response_model=schemas.ReturnMsg)
 def create_user(user: schemas.User) -> Any:
-        db = SessionLocal()
+        db = db.session.SessionLocal()
         if user.role > 3 or user.role == 0:
             raise HTTPException(
                 status_code=400,
