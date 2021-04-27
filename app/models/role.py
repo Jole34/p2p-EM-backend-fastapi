@@ -1,9 +1,9 @@
 
 from sqlalchemy import Column, Integer, String
+import sys, os
+sys.path.append(os.path.abspath(os.path.join('..', 'db')))
+from db.base_class import Base
 
-from app import db
-from db import base_class
-from base_class import Base
 
 class Role(Base):
     __tablename__ = 'role'
