@@ -9,3 +9,6 @@ pip install -r requirments-dev.txt
     
 ## To run on local:
     uvicorn main:app --reload --app-dir app
+## Run alembic migrations
+    alembic revision --autogenerate -m "Migration message"
+    alembic upgrade head

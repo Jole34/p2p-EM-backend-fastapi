@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Any
-from db.session import SessionLocal
+from app.db.session import SessionLocal
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette.requests import Request
 
