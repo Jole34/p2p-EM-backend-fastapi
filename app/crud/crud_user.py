@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-import models
+from app import models
 import schemas
 class CRUDUser():
     def create(self, db: Session, obj_in: schemas.User) -> Optional[User]:
