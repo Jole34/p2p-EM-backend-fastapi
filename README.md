@@ -8,4 +8,4 @@ pip install -r requirments-dev.txt
     Postgres db on local/production
     
 ## To run on local:
-    uvicorn main:app --reloadeload --app-dir app
+    uvicorn main:app --reload --app-dir app
