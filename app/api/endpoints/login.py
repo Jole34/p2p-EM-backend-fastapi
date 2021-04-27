@@ -7,8 +7,7 @@ from starlette.requests import Request
 
 from app import schemas
 from app import crud
-
-import db
+from db.session import SessionLocal
 import traceback
 router = APIRouter()
 
@@ -18,7 +17,7 @@ def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()) ->
 
 @router.post('/create-user/', response_model=schemas.ReturnMsg)
 def create_user(user: schemas.User) -> Any:
-        db = db.session.SessionLocal()
+        db = SessionLocal()
         if user.role > 3 or user.role == 0:
             raise HTTPException(
                 status_code=400,

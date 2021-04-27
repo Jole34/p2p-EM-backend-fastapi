@@ -8,7 +8,7 @@ from datetime import datetime
 from app import models
 import schemas
 class CRUDUser():
-    def create(self, db: Session, obj_in: schemas.User) -> Optional[User]:
+    def create(self, db: Session, obj_in: schemas.User) -> Optional[models.User]:
             db_obj = models.User(
                 name=obj_in.name,
                 last_name=obj_in.last_name,
