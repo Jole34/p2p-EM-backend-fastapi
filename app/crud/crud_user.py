@@ -13,7 +13,7 @@ class CRUDUser():
                 name=obj_in.name,
                 last_name=obj_in.last_name,
                 email=obj_in.email,
-                hashed_password=obj_in.hashed_password,
+                hashed_password=obj_in.password,
                 role_id=obj_in.role
             )
             db.add(db_obj)

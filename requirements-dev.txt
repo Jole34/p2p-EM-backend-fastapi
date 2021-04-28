@@ -13,3 +13,6 @@ python-multipart==0.0.5
 jinja2==2.11.2
 uvloop
 httptools
+pydantic[email]
+email-validator==1.1.2
+emails==0.6

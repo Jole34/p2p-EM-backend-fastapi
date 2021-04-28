@@ -9,6 +9,7 @@ from app import schemas
 from app import crud
 from db.session import SessionLocal
 import traceback
+import re
 router = APIRouter()
 
 @router.post('/login/')
@@ -24,11 +25,17 @@ def create_user(user: schemas.User) -> Any:
                 detail="Invalid role"
             )       
         
-        if len(user.hashed_password) < 8:
+        if len(user.password) < 8:
             raise HTTPException(
                 status_code=400,
                 detail="Short password"
-            )               
+            )             
+
+        if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", user.email):
+            raise HTTPException(
+                status_code=400,
+                detail="Not a valid email."
+            )           
 
         user = crud.user.create(db, obj_in=user)
         if not user:

@@ -9,7 +9,7 @@
     Postgres db on local/production
     
 ## To run on local:
-    uvicorn main:app --reload --app-dir app (running on port 800)
+    uvicorn main:app --reload --app-dir app (running on port 8000)
 ## Run alembic migrations
     alembic revision --autogenerate -m "Migration message"
     alembic upgrade head
