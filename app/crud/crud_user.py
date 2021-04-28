@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-from app import models
+import models
 import schemas
 class CRUDUser():
     def create(self, db: Session, obj_in: schemas.User) -> Optional[models.User]:
@@ -25,5 +25,13 @@ class CRUDUser():
             db.refresh(db_obj)
             return db_obj
 
+    def get_user(self, db: Session, email: str, password: str) ->  Optional[models.User]:
+        return db.query(models.User).filter(models.User.email == email, models.User.hashed_password == password).first()
+    
+    def get_user_email(self, db: Session, email: str) -> Optional[models.User]:
+        return db.query(models.User).filter(models.User.email == email).first()     
+
+    def get_user_by_id(self, db: Session, id: int) -> Optional[models.User]:
+        return db.query(models.User).filter(models.User.id == id).first()     
 user = CRUDUser()
 

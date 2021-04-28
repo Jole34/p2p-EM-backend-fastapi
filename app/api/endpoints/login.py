@@ -4,44 +4,26 @@ from app import db
 
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette.requests import Request
-
-from app import schemas
-from app import crud
+from datetime import datetime, timedelta
+import schemas
+import crud
 from db.session import SessionLocal
+from settings.common import create_token  
+
 import traceback
 import re
 router = APIRouter()
 
 @router.post('/login/')
-def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()) -> Any:
-    pass
+def login(form_data: OAuth2PasswordRequestForm = Depends()) -> Any:
+    db = SessionLocal()
+    user_dict = crud.user.get_user(db, form_data.username, form_data.password)
+    db.close()
+    if not user_dict:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    secret = form_data.client_secret
 
-@router.post('/create-user/', response_model=schemas.ReturnMsg)
-def create_user(user: schemas.User) -> Any:
-        db = SessionLocal()
-        if user.role > 3 or user.role == 0:
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid role"
-            )       
-        
-        if len(user.password) < 8:
-            raise HTTPException(
-                status_code=400,
-                detail="Short password"
-            )             
+    duration = timedelta(minutes=60*24*2)
+    token = create_token(user_dict.id, expires=duration)
 
-        if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", user.email):
-            raise HTTPException(
-                status_code=400,
-                detail="Not a valid email."
-            )           
-
-        user = crud.user.create(db, obj_in=user)
-        if not user:
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid data"
-            )
-        return {'msg':'User written in db.'}
-        db.close()
+    return {"access_token": token, "token_type": "bearer", "user": user_dict}
