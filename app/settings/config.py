@@ -1,5 +1,7 @@
 from pydantic import BaseSettings, PostgresDsn, validator
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
+
+from pydantic import AnyHttpUrl
 
 class Settings(BaseSettings):
     POSTGRES_SERVER: str
@@ -7,6 +9,10 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
     SQLALCHEMY_DATABASE_URI: Optional[str] = None
+
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
+        "http://localhost"
+    ]
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection_sandbox(cls, v: Optional[str], values: Dict[str, Any]) -> Any:

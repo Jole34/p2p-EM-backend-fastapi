@@ -17,7 +17,11 @@ router = APIRouter()
 
 @router.get('/user-me/')
 def get_user_me(user: User = Depends(verify_token)):
-    return user;
+    return user
+
+@router.get('/test/')
+def get_user_me():
+    return 'test'
 
 @router.post('/create-user/', response_model=schemas.UserOutput)
 def create_user(user: schemas.User) -> Any:
