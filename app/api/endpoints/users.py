@@ -76,8 +76,7 @@ def create_user_billing(user: User = Depends(verify_token), billing: schemas.Bil
                 status_code=400,
                 detail="Invalid data, there is no country like that."
             )
-        print(billing.__dict__)
-        if not billing.address_line or not billing.balance_id or not billing.city or not billing.country or not billing.zip_code:
+        if not billing.address_line or billing.balance_id is not None or not billing.city or not billing.country or not billing.zip_code:
             raise HTTPException(
                 status_code=400,
                 detail="All values most be populated."
