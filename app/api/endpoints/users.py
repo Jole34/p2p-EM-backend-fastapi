@@ -111,7 +111,7 @@ def get_billing(user: User = Depends(verify_token)):
         db = SessionLocal()
         billing = crud.billing.get_billing_by_user_id(db, user.id)
         db.close()
-        if not balance:
+        if not billing:
             raise HTTPException(
                 status_code=404,
                 detail="Not found"
