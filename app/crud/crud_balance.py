@@ -25,4 +25,8 @@ class CRUDBalance():
     def get_balance_by_id(self, db: Session, id: int) -> Optional[models.Balance]:
         return db.query(models.Balance).filter(models.Balance.id == id).first()  
 
+    def get_balance_by_user_id(self, db: Session, id: int) -> Optional[models.Balance]:
+        return db.query(models.Balance).filter(models.Balance.user_id == id).first()  
+
+
 balance = CRUDBalance()

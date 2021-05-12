@@ -117,3 +117,15 @@ def get_billing(user: User = Depends(verify_token)):
                 detail="Not found"
             )
         return billing
+
+@router.get('/balance/')
+def get_balance(user: User = Depends(verify_token)):
+        db = SessionLocal()
+        balance = crud.balance.get_balance_by_user_id(db, user.id)
+        db.close()
+        if not balance:
+            raise HTTPException(
+                status_code=404,
+                detail="Not found"
+            )
+        return balance
