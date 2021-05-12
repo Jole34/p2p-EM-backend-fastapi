@@ -129,3 +129,10 @@ def get_balance(user: User = Depends(verify_token)):
                 detail="Not found"
             )
         return balance
+
+
+@router.post('/billing/update/')
+def create_user_billing(user: User = Depends(verify_token), billing: schemas.Billing = None):
+        db = SessionLocal()
+        
+        db.close()

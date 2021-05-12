@@ -8,16 +8,12 @@ app = FastAPI(
     title='P2PEnergy', openapi_url='/api/p2p/openapi.json'
 )
 
-if settings.BACKEND_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=[
-            "http://localhost",
-            "http://localhost:4200"
-        ],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"]
-    )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 app.include_router(api_router, prefix='/api/p2p')
