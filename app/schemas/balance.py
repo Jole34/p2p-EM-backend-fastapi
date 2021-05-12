@@ -7,3 +7,6 @@ class Balance(BaseModel):
 class BalanceCreate(BaseModel):
     ammount: float
     user_id: int
+
+    class Config:
+        orm_mode = True

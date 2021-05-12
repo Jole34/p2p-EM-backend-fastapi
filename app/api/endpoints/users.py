@@ -51,8 +51,9 @@ def create_user(user: schemas.User) -> Any:
 @router.post('/balance/')
 def create_user_balance(user: User = Depends(verify_token), balance: schemas.Balance = None):
         db = SessionLocal()
+        print(user.id)
         obj_in = schemas.BalanceCreate(
-            amount=balance.ammount,
+            ammount=balance.ammount,
             user_id=user.id
         )
         balance_update = crud.balance.create(db, obj_in=obj_in)
