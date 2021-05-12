@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     title='P2PEnergy', openapi_url='/api/p2p/openapi.json'
 )
-app.include_router(api_router, prefix='/api/p2p')\
+app.include_router(api_router, prefix='/api/p2p')
 
 app.add_middleware(
     CORSMiddleware,
