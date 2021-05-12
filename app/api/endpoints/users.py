@@ -21,7 +21,7 @@ def get_user_me(user: User = Depends(verify_token)):
 
 @router.post('/create-user/', response_model=schemas.UserOutput)
 def create_user(user: schemas.User) -> Any:
-        if user.role > 3 or user.role == 0:
+        if user.role > 4 or user.role == 0:
             raise HTTPException(
                 status_code=400,
                 detail="Invalid role"
