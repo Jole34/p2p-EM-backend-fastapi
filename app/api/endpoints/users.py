@@ -106,7 +106,7 @@ def create_user_billing(user: User = Depends(verify_token), billing: schemas.Bil
         return billing_update
 
 @router.get('/billing/')
-def get_user_me(user: User = Depends(verify_token)):
+def get_billing(user: User = Depends(verify_token)):
         db = SessionLocal()
         billing = crud.billing.get_billing_by_user_id(db, user.id)
         db.close()
