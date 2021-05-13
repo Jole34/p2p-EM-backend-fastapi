@@ -94,7 +94,7 @@ def create_user_billing(user: User = Depends(verify_token), billing: schemas.Bil
             city=billing.city,
             country=billing.country,
             zip_code=billing.zip_code,
-            user_id=billing.id
+            user_id=user.id
         )
         billing_update = crud.billing.create(db, obj_in=biling_obj)
         db.close()
