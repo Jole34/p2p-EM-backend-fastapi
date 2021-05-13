@@ -59,10 +59,8 @@ def create_user_balance(user: User = Depends(verify_token), balance: schemas.Bal
                 detail="Invalid data"
             )
         
-        data = {
-            'amount': balance.amount
-        }
-        updated = crud.billing.update(db, data, id=balance_update.id)
+        balance_update.amount = balance.amount
+        updated = crud.billing.update(db, balance_update)
         db.close()
 
         if not updated:
@@ -139,23 +137,23 @@ def update_billing(user: User = Depends(verify_token), billing: schemas.BillingU
                 status_code=404,
                 detail="Not found"
             )
-        result = {}
+            
         if billing.address_line:
-            result.update({'addres':billing.address_line})
+           billing_db.addres=billing.address_line
         if billing.city:
-            result.update({'city':billing.city})
+           billing_db.city=billing.city
         if billing.country:
-            result.update({'country':billing.country})
+           billing_db.country=billing.country
         if billing.zip_code:
-            result.update({'zip_code':billing.zip_code})        
+           billing_db.zip_code=billing.zip_code        
         if billing.zip_code:
-            result.update({'zip_code':billing.zip_code})    
+           billing_db.zip_code=billing.zip_code    
         if billing.discount:
-            result.update({'discount':billing.discount}) 
+           billing_db.discount=billing.discount 
         if billing.amount:
-            result.update({'discount':billing.amount}) 
+           billing_db.discount=billing.amount 
 
-        updated = crud.billing.update(db, result, id=billing_db.id)
+        updated = crud.billing.update(db, billing_db)
         if not updated:
             raise HTTPException(
                 status_code=400,
