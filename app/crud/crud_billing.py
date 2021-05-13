@@ -26,6 +26,7 @@ class CRUDBilling():
             return db_obj
 
     def update(self, db: Session, obj_in) -> bool:
+        db_obj = obj_in
         db.add(db_obj)
         try:
             db.commit()
