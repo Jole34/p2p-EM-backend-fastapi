@@ -15,7 +15,7 @@ import re
 
 router = APIRouter()
 
-@router.get('/user-me/')
+@router.get('/user-me/', response_model=schemas.UserOutput)
 def get_user_me(user: User = Depends(verify_token)):
     return user
 
