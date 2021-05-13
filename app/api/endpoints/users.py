@@ -49,9 +49,9 @@ def create_user(user: schemas.User) -> Any:
         return user
 
 @router.post('/balance/')
-def create_user_balance(user: User = Depends(verify_token), balance: schemas.Balance = None):
+def update_user_balance(user: User = Depends(verify_token), balance: schemas.Balance = None):
         db = SessionLocal()
-        balance_update = crud.billing.get_billing_by_user_id(db, obj_in=obj_in)
+        balance_update = crud.billing.get_billing_by_user_id(db, user.id)
        
         if not balance_update:
             raise HTTPException(
