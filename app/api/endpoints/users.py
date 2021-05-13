@@ -131,7 +131,7 @@ def get_balance(user: User = Depends(verify_token)):
 
 
 @router.post('/billing/update/')
-def update_billing(user: User = Depends(verify_token), billing: schemas.Billing = None):
+def update_billing(user: User = Depends(verify_token), billing: schemas.BillingUpdate = None):
         db = SessionLocal()
         billing_db = crud.billing.get_billing_by_user_id(db, user.id)
         if not billing_db:
@@ -139,8 +139,23 @@ def update_billing(user: User = Depends(verify_token), billing: schemas.Billing 
                 status_code=404,
                 detail="Not found"
             )
+        result = {}
+        if billing.address_line:
+            result.update({'addres':billing.address_line})
+        if billing.city:
+            result.update({'city':billing.city})
+        if billing.country:
+            result.update({'country':billing.country})
+        if billing.zip_code:
+            result.update({'zip_code':billing.zip_code})        
+        if billing.zip_code:
+            result.update({'zip_code':billing.zip_code})    
+        if billing.discount:
+            result.update({'discount':billing.discount}) 
+        if billing.amount:
+            result.update({'discount':billing.amount}) 
 
-        updated = crud.billing.update(db, billing.__dict__, billing_db.id)
+        updated = crud.billing.update(db, result, billing_db.id)
         if not updated:
             raise HTTPException(
                 status_code=400,
