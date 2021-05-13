@@ -9,13 +9,7 @@ import models
 import schemas
 class CRUDBilling():
     def create(self, db: Session, obj_in: schemas.Billing) -> Optional[models.Billing]:
-            db_obj = models.Billing(
-                name=obj_in.name,
-                last_name=obj_in.last_name,
-                email=obj_in.email,
-                hashed_password=obj_in.password,
-                role_id=obj_in.role
-            )
+            db_obj = obj_in
             db.add(db_obj)
             try:
                 db.commit()
