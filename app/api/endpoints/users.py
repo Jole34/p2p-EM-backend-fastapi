@@ -62,7 +62,7 @@ def create_user_balance(user: User = Depends(verify_token), balance: schemas.Bal
         data = {
             'amount': balance.amount
         }
-        updated = crud.billing.update(db, data, balance_update.id)
+        updated = crud.billing.update(db, data, id=balance_update.id)
         db.close()
 
         if not updated:
@@ -155,7 +155,7 @@ def update_billing(user: User = Depends(verify_token), billing: schemas.BillingU
         if billing.amount:
             result.update({'discount':billing.amount}) 
 
-        updated = crud.billing.update(db, result, billing_db.id)
+        updated = crud.billing.update(db, result, id=billing_db.id)
         if not updated:
             raise HTTPException(
                 status_code=400,
