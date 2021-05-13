@@ -133,18 +133,19 @@ def get_balance(user: User = Depends(verify_token)):
 @router.post('/billing/update/')
 def update_billing(user: User = Depends(verify_token), billing: schemas.Billing = None):
         db = SessionLocal()
-        billing = crud.billing.get(db, user.id)
-        if not billing:
+        billing_db = crud.billing.get(db, user.id)
+        if not billing_db:
             raise HTTPException(
                 status_code=404,
                 detail="Not found"
             )
 
-        updated = crud.billing.update(db, data.__dict__, billing.id)
+        updated = crud.billing.update(db, billing.__dict__, billing_db.id)
         if not updated:
             raise HTTPException(
                 status_code=400,
                 detail="Update error"
             )
         db.close()
+        return updated
 
