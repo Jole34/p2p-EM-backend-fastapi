@@ -14,7 +14,7 @@ class CRUDBilling():
                 city=obj_in.city,
                 country=obj_in.country,
                 zip_code=obj_in.zip_code,
-                user_id=obj_in.user.id
+                user_id=obj_in.user_id
             )
             db.add(db_obj)
             try:
