@@ -29,4 +29,7 @@ class CRUDBilling():
     def get_billing_by_user_id(self, db: Session, id: int) -> Optional[models.Billing]:
         return db.query(models.Billing).filter(models.Billing.user_id == id).first()  
 
+    def get_balance_by_user_id(self, db: Session, id: int) -> Optional[models.Billing]: 
+        return db.query(models.Billing).filter(models.Billing.user_id == id).first()  
+
 billing = CRUDBilling()

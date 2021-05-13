@@ -76,25 +76,17 @@ def create_user_billing(user: User = Depends(verify_token), billing: schemas.Bil
                 status_code=400,
                 detail="Invalid data, there is no country like that."
             )
-        if not billing.address_line or billing.balance_id is not None or not billing.city or not billing.country or not billing.zip_code:
+        if not billing.address_line or not billing.city or not billing.country or not billing.zip_code:
             raise HTTPException(
                 status_code=400,
                 detail="All values most be populated."
             )                    
-
-        balance = crud.balance.get_balance_by_id(db,billing.balance_id)
-
-        if not balance:
-            raise HTTPException(
-                    status_code=400,
-                    detail="Can't add billing for the given balance, balance id error."
-            )               
+              
         biling_obj = schemas.BillingIn(
             address_line=obj_in.address_line,
             city=obj_in.city,
             country=obj_in.country,
             zip_code=obj_in.zip_code,
-            balance_id=obj_in.balance_id,
             user_id=user.id
         )
         billing_update = crud.billing.create(db, obj_in=biling_obj)
@@ -121,18 +113,18 @@ def get_billing(user: User = Depends(verify_token)):
 @router.get('/balance/')
 def get_balance(user: User = Depends(verify_token)):
         db = SessionLocal()
-        balance = crud.balance.get_balance_by_user_id(db, user.id)
+        billing = crud.billing.get_balance_by_user_id(db, user.id)
         db.close()
-        if not balance:
+        if not billing.amount is not None:
             raise HTTPException(
                 status_code=404,
                 detail="Not found"
             )
-        return balance
+        return billing.amount
 
 
 @router.post('/billing/update/')
 def create_user_billing(user: User = Depends(verify_token), billing: schemas.Billing = None):
         db = SessionLocal()
-        
+        return "In progress."
         db.close()
