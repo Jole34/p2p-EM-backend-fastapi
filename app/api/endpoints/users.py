@@ -60,7 +60,7 @@ def create_user_balance(user: User = Depends(verify_token), balance: schemas.Bal
             )
         
         data = {
-            amount=balance.amount
+            'amount': balance.amount
         }
         updated = crud.billing.update(db, data, balance_update.id)
         db.close()
