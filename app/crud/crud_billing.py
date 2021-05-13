@@ -25,6 +25,17 @@ class CRUDBilling():
             db.refresh(db_obj)
             return db_obj
 
+    def update(self, db: Session, obj_in: dict, **kwargs) -> bool:
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = obj_in.dict(exclude_unset=True)
+
+        db_obj = db.query(models.Billing).filter(models.Billing.id == kwargs['id']).first()
+        if not db_obj:
+            return False
+        super().update(db, db_obj=db_obj, obj_in=update_data)
+        return True
 
     def get_billing_by_user_id(self, db: Session, id: int) -> Optional[models.Billing]:
         return db.query(models.Billing).filter(models.Billing.user_id == id).first()  

@@ -51,19 +51,26 @@ def create_user(user: schemas.User) -> Any:
 @router.post('/balance/')
 def create_user_balance(user: User = Depends(verify_token), balance: schemas.Balance = None):
         db = SessionLocal()
-        print(user.id)
-        obj_in = schemas.BalanceCreate(
-            ammount=balance.ammount,
-            user_id=user.id
-        )
-        balance_update = crud.balance.create(db, obj_in=obj_in)
-        db.close()
+        balance_update = crud.billing.get_billing_by_user_id(db, obj_in=obj_in)
+       
         if not balance_update:
             raise HTTPException(
                 status_code=400,
                 detail="Invalid data"
             )
-        return balance_update
+        
+        data = {
+            amount=balance.amount
+        }
+        updated = crud.billing.update(db, data, balance_update.id)
+        db.close()
+
+        if not updated:
+            raise HTTPException(
+                status_code=400,
+                detail="Error while adding balance."
+            )
+        return balance.amount
 
 @router.post('/billing/')
 def create_user_billing(user: User = Depends(verify_token), billing: schemas.Billing = None):

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
 class Balance(BaseModel):
-    ammount: float
+    amount: float
 
 
 class BalanceCreate(BaseModel):
