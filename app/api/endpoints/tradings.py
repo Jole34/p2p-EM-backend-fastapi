@@ -72,7 +72,7 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
                     status_code=400,
                     detail="Invalid data"
             )   
-        if balance.money_amount-money_amount < money_amount:
+        if balance.money_amount-money_amount < 0:
                 raise HTTPException(
                 status_code=400,
                 detail="Not enough money."
