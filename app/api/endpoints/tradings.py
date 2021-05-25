@@ -98,6 +98,7 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
 
 @router.post('/sell/')
 def sell_energy(user: User = Depends(verify_token), energy_amount: float = None):
+    print(energy_amount)
     if not energy_amount:
         raise HTTPException(
                 status_code=400,

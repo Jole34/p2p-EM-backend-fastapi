@@ -129,13 +129,12 @@ def get_balance(user: User = Depends(verify_token)):
         db = SessionLocal()
         billing = crud.billing.get_balance_by_user_id(db, user.id)
         db.close()
-        if billing.amount is None:
+        if not billing:
             raise HTTPException(
                 status_code=404,
                 detail="Not found"
             )
-        return billing.amount
-
+        return {'money': billing.money_amount, 'energy': billing.energy_amount}
 
 @router.post('/billing/update/')
 def update_billing(user: User = Depends(verify_token), billing: schemas.BillingUpdate = None):
@@ -159,9 +158,11 @@ def update_billing(user: User = Depends(verify_token), billing: schemas.BillingU
            billing_db.zip_code=billing.zip_code    
         if billing.discount:
            billing_db.discount=billing.discount 
-        if billing.amount:
-           billing_db.discount=billing.amount 
-
+        if billing.energy_amount:
+           billing_db.discount=billing.energy_amount 
+        if billing.money_amount:
+           billing_db.discount=billing.money_amount
+            
         updated = crud.billing.update(db, billing_db)
         if not updated:
             raise HTTPException(

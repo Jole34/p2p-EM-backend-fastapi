@@ -20,4 +20,5 @@ class BillingUpdate(BaseModel):
     country: Optional[str] = None 
     zip_code: Optional[str] = None 
     discount: Optional[float] = None 
-    amount: Optional[float] = None
+    money_amount: Optional[float] = None
+    energy_amount: Optional[float] = None
