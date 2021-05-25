@@ -66,7 +66,7 @@ def update_user_balance(user: User = Depends(verify_token), balance: schemas.Bal
             )
         
 
-        balance_update.money_amount = balance.money_amount+balance.money_amount
+        balance_update.money_amount = balance_update.money_amount+balance.money_amount
         updated = crud.billing.update(db, balance_update)
         db.close()
 
