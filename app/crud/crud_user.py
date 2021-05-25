@@ -19,9 +19,14 @@ class CRUDUser():
             name=obj_in.name,
             last_name=obj_in.last_name,
             email=obj_in.email,
-            hashed_password=str(pw_hash),
-            role_id=obj_in.role
+            hashed_password=str(pw_hash)
         )
+        if obj_in.role_id_1:
+            db_obj.role_id_1 = obj_in.role_id_1
+        if obj_in.role_id_2:
+            db_obj.role_id_2 = obj_in.role_id_2
+        if obj_in.role_id_3:
+            db_obj.role_id_3 = obj_in.role_id_3
         db.add(db_obj)
         try:
             db.commit()
