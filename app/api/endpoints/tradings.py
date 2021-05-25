@@ -13,8 +13,10 @@ from models import User
 import traceback
 import re
 import schemas
+import models
 import crud
 import requests 
+import uuid
 
 router = APIRouter()
 
@@ -50,6 +52,18 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
         balance.money_amount = balance.money_amount-energy_amount*result_constant
         balance.energy_amount = balance.energy_amount+energy_amount
         crud.billing.update(db, balance)
+        trade = models.Trade(
+            description='Buy from energy'
+            action='buy',
+            trade_type='energy',
+            amount=energy_amount*result_constant,
+            price=energy_amount,
+            moment_balance=result_constant,
+            trade_id=str(uuid.uuid1()),
+            currency='USD'
+            user_id=user.id
+        )
+        crud.trade.create(db, trade)
         
     else:
         balance = crud.billing.get_balance_by_user_id(db, user.id)
@@ -66,6 +80,18 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
         balance.energy_amount = int(balance.energy_amount+(money_amount/result_constant)*100)/100
         balance.money_amount = balance.money_amount-money_amount
         crud.billing.update(db, balance)
+        trade = models.Trade(
+            description='Buy from money'
+            action='buy',
+            trade_type='money',
+            amount=money_amount,
+            price=int((money_amount/result_constant)*100)/100,
+            moment_balance=result_constant,
+            trade_id=str(uuid.uuid1()),
+            currency='USD'
+            user_id=user.id
+        )
+        crud.trade.create(db, trade)
 
     db.close()
     return result_constant
@@ -101,6 +127,18 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: float = None)
     balance.energy_amount = balance.energy_amount-energy_amount
     balance.money_amount = balance.money_amount-energy_amount*result_constant
     crud.billing.update(db, balance)
+        trade = models.Trade(
+            description='Sell from energy'
+            action='sell',
+            trade_type='energy',
+            amount=energy_amount*result_constant,
+            price=energy_amount,
+            moment_balance=result_constant,
+            trade_id=str(uuid.uuid1()),
+            currency='USD'
+            user_id=user.id
+        )
+        crud.trade.create(db, trade)
     db.close()
     return result_constant
 
