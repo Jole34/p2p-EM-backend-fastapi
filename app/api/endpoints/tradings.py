@@ -53,14 +53,14 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
         balance.energy_amount = balance.energy_amount+energy_amount
         crud.billing.update(db, balance)
         trade = models.Trade(
-            description='Buy from energy'
+            description='Buy from energy',
             action='buy',
             trade_type='energy',
             amount=energy_amount*result_constant,
             price=energy_amount,
             moment_balance=result_constant,
             trade_id=str(uuid.uuid1()),
-            currency='USD'
+            currency='USD',
             user_id=user.id
         )
         crud.trade.create(db, trade)
@@ -81,14 +81,14 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
         balance.money_amount = balance.money_amount-money_amount
         crud.billing.update(db, balance)
         trade = models.Trade(
-            description='Buy from money'
+            description='Buy from money',
             action='buy',
             trade_type='money',
             amount=money_amount,
             price=int((money_amount/result_constant)*100)/100,
             moment_balance=result_constant,
             trade_id=str(uuid.uuid1()),
-            currency='USD'
+            currency='USD',
             user_id=user.id
         )
         crud.trade.create(db, trade)
@@ -127,18 +127,19 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: float = None)
     balance.energy_amount = balance.energy_amount-energy_amount
     balance.money_amount = balance.money_amount-energy_amount*result_constant
     crud.billing.update(db, balance)
-        trade = models.Trade(
-            description='Sell from energy'
+    trade = models.Trade(
+            description='Sell from energy',
             action='sell',
             trade_type='energy',
             amount=energy_amount*result_constant,
             price=energy_amount,
             moment_balance=result_constant,
             trade_id=str(uuid.uuid1()),
-            currency='USD'
+            currency='USD',
             user_id=user.id
         )
-        crud.trade.create(db, trade)
+        
+    crud.trade.create(db, trade)
     db.close()
     return result_constant
 
