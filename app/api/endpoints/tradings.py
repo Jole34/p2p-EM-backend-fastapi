@@ -126,12 +126,12 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: schemas.Energ
             detail="Not enough energy to sell."
     )      
     balance.energy_amount = balance.energy_amount-energy_amount.energy_amount
-    balance.money_amount = balance.money_amount-energy_amount.energy_amount*result_constant
+    balance.money_amount = balance.money_amount+energy_amount.energy_amount*result_constant
     crud.billing.update(db, balance)
     trade = models.Trade(
             description='Sell from energy',
             action='sell',
-            trade_type='energy',
+                ='energy',
             amount=energy_amount.energy_amount*result_constant,
             price=energy_amount.energy_amount,
             moment_balance=result_constant,
