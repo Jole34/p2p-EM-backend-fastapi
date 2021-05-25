@@ -97,7 +97,7 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
     return result_constant
 
 @router.post('/sell/')
-def sell_energy(user: User = Depends(verify_token), energy_amount: float):
+def sell_energy(energy_amount: float, user: User = Depends(verify_token)):
     print(energy_amount)
     if not energy_amount:
         raise HTTPException(
