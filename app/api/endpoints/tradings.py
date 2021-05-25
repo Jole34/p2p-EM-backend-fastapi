@@ -28,7 +28,7 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
     db = SessionLocal()
     try:
         constant = requests.get('https://api.coinbase.com/v2/prices/spot?currency=USD').json()
-        result_constant = float(constant['data']['amount'])/1000
+        result_constant = int(float(constant['data']['amount'])/10000*100)/100
     except:
         raise HTTPException(
                 status_code=400,
@@ -68,7 +68,7 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
         crud.billing.update(db, balance)
 
     db.close()
-    return "Success"
+    return result_constant
 
 @router.post('/sell/')
 def sell_energy(user: User = Depends(verify_token), energy_amount: float = None):
@@ -80,7 +80,7 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: float = None)
     db = SessionLocal()
     try:
         constant = requests.get('https://api.coinbase.com/v2/prices/spot?currency=USD').json()
-        result_constant = float(constant['data']['amount'])/1000
+        result_constant = int(float(constant['data']['amount'])/10000*100)/100
     except:
         raise HTTPException(
                 status_code=400,
@@ -102,7 +102,7 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: float = None)
     balance.money_amount = balance.money_amount-energy_amount*result_constant
     crud.billing.update(db, balance)
     db.close()
-    return "Success"
+    return result_constant
 
 
 @router.get('/get_all/')
@@ -118,3 +118,15 @@ def get_trading_me(user: User = Depends(verify_token), params: PaginationParams 
     trades = paginate(query, params)
     return trades
 
+
+@router.get('/get_rate/')
+def get_rate():
+    try:
+        constant = requests.get('https://api.coinbase.com/v2/prices/spot?currency=USD').json()
+        result_constant = int(float(constant['data']['amount'])/10000*100)/100
+    except:
+        raise HTTPException(
+                status_code=400,
+                detail="Invalid data"
+        )  
+    return result_constant
