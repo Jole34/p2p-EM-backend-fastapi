@@ -101,7 +101,7 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: float = None)
     if not energy_amount:
         raise HTTPException(
                 status_code=400,
-                detail="Invalid data"
+                detail="Invalid data, amount is none"
         )   
     db = SessionLocal()
     try:
@@ -110,13 +110,13 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: float = None)
     except:
         raise HTTPException(
                 status_code=400,
-                detail="Invalid data"
+                detail="Invalid data, api for currency failed"
         )  
     balance = crud.billing.get_balance_by_user_id(db, user.id)
     if not balance:
         raise HTTPException(
                 status_code=400,
-                detail="Invalid data"
+                detail="Invalid data, there is no billing for user"
         )   
     amount = balance.energy_amount
     if energy_amount > amount:
