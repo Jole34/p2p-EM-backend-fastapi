@@ -19,15 +19,19 @@ router = APIRouter()
 
 @router.post('/buy/')
 def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, money_amount: float = None):
-   
     if not energy_amount and not money_amount:
         raise HTTPException(
                 status_code=400,
                 detail="Invalid data"
         )   
+    db = SessionLocal()
     if energy_amount:   
-        db = SessionLocal()
         balance = crud.billing.get_balance_by_user_id(db, user.id)
+        if not balance:
+            raise HTTPException(
+                    status_code=400,
+                    detail="Invalid data"
+            )   
         amount = balance.money_amount
         if energy_amount*4.2 > amount:
                 raise HTTPException(
@@ -35,23 +39,30 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
                 detail="Not enough money."
         )      
         balance.money_amount = balance.money_amount-energy_amount*4.2
+        balance.energy_amount = balance.energy_amount+energy_amount
         crud.billing.update(db, balance)
         
     else:
-        balance.money_amount = balance.money_amount-money_amount
-        if balance.money_amount < money_amount:
+        balance = crud.billing.get_balance_by_user_id(db, user.id)
+        if not balance:
+            raise HTTPException(
+                    status_code=400,
+                    detail="Invalid data"
+            )   
+        if balance.money_amount-money_amount < money_amount:
                 raise HTTPException(
                 status_code=400,
                 detail="Not enough money."
         )              
-        balance.energy_amount = balance.energy_amount+(money_amount*4.2)
+        balance.energy_amount = int(balance.energy_amount+(money_amount/4.2)*100)/100
+        balance.money_amount = balance.money_amount-money_amount
         crud.billing.update(db, balance)
 
     db.close()
-    return balance.money_amount
+    return "Success"
 
 @router.post('/sell/')
-def sell_energy(user: User = Depends(verify_token), energy_amount: float):
+def sell_energy(user: User = Depends(verify_token), energy_amount: float = None):
     if not energy_amount:
         raise HTTPException(
                 status_code=400,
@@ -59,16 +70,22 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: float):
         )   
     db = SessionLocal()
     balance = crud.billing.get_balance_by_user_id(db, user.id)
+    if not balance:
+        raise HTTPException(
+                status_code=400,
+                detail="Invalid data"
+        )   
     amount = balance.energy_amount
-    if energy_amount < amount:
+    if energy_amount > amount:
             raise HTTPException(
             status_code=400,
             detail="Not enough energy to sell."
     )      
     balance.energy_amount = balance.energy_amount-energy_amount
+    balance.money_amount = balance.money_amount-energy_amount*4.2
     crud.billing.update(db, balance)
     db.close()
-    return balance.energy_amount
+    return "Success"
 
 
 @router.get('/get_all/')
