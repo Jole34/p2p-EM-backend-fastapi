@@ -92,7 +92,7 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
             user_id=user.id
         )
         crud.trade.create(db, trade)
-
+    balance = crud.billing.get_balance_by_user_id(db, user.id)
     db.close()
     return {"energy": balance.energy_amount, "money": balance.money_amount, "rate": result_constant}
 
@@ -141,6 +141,7 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: schemas.Energ
         )
         
     crud.trade.create(db, trade)
+    balance = crud.billing.get_balance_by_user_id(db, user.id)
     db.close()
     return {"energy": balance.energy_amount, "money": balance.money_amount, "rate": result_constant}
 
