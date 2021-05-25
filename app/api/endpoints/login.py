@@ -29,6 +29,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()) -> Any:
         "roles": [user_dict.role_id_1, user_dict.role_id_2, user_dict.role_id_3],
         "email": user_dict.email,
         "name": user_dict.name,
-        "status": user_dict.status
+        "status": user_dict.status.lower()
     }
     return {"access_token": token, "token_type": "bearer", "user": user_dict_res}
