@@ -21,6 +21,12 @@ def get_user_me(user: User = Depends(verify_token)):
 
 @router.post('/create-user/', response_model=schemas.UserOutput)
 def create_user(user: schemas.User) -> Any:
+        if user.role_id_1 == 0 and user.role_id_2 == 0 and user.role_id_3:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid role IDS"
+            )              
+
         if user.role_id_1 > 4  or user.role_id_2 > 4 or user.role_id_3 > 4:
             raise HTTPException(
                 status_code=400,
@@ -48,7 +54,7 @@ def create_user(user: schemas.User) -> Any:
             )
         return user
 
-@router.post('/balance/')
+@router.put('/balance/')
 def update_user_balance(user: User = Depends(verify_token), balance: schemas.Balance = None):
         db = SessionLocal()
         balance_update = crud.billing.get_billing_by_user_id(db, user.id)
@@ -59,7 +65,10 @@ def update_user_balance(user: User = Depends(verify_token), balance: schemas.Bal
                 detail="Invalid data"
             )
         
-        balance_update.amount = balance.amount
+        if not balance_update.money_amount:
+            balance_update.money_amount = balance.money_amount
+        else:
+            balance_update.money_amount = balance.money_amount+balance.money_amount
         updated = crud.billing.update(db, balance_update)
         db.close()
 
@@ -68,7 +77,7 @@ def update_user_balance(user: User = Depends(verify_token), balance: schemas.Bal
                 status_code=400,
                 detail="Error while adding balance."
             )
-        return balance.amount
+        return balance.money_amount
 
 @router.post('/billing/')
 def create_user_billing(user: User = Depends(verify_token), billing: schemas.Billing = None):
@@ -162,3 +171,27 @@ def update_billing(user: User = Depends(verify_token), billing: schemas.BillingU
         db.close()
         return updated
 
+
+@router.put('/energy-balance/')
+def update_energy_balance(user: User = Depends(verify_token), balance: schemas.BalanceEnergy = None):
+        db = SessionLocal()
+        balance_update = crud.billing.get_billing_by_user_id(db, user.id)
+       
+        if not balance_update:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid data"
+            )
+        if not balance_update.energy_amount:
+            balance_update.energy_amount = balance.energy_amount
+        else:
+            balance_update.energy_amount = balance.energy_amount+balance.energy_amount
+        updated = crud.billing.update(db, balance_update)
+        db.close()
+
+        if not updated:
+            raise HTTPException(
+                status_code=400,
+                detail="Error while adding balance."
+            )
+        return balance.energy_amount

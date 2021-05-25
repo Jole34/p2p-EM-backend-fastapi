@@ -9,6 +9,7 @@ class Trade(Base):
     created_on = Column(DateTime, server_default=func.now(), index=True)
     description = Column(String(255), nullable=False)
     action = Column(String, nullable=False)
+    trade_type = Column(String, nullable=False, default='energy')
     amount = Column(Float)
     price = Column(Float)
     moment_balance = Column(Float)
