@@ -25,5 +25,10 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()) -> Any:
 
     duration = timedelta(minutes=60*24*2)
     token = create_token(user_dict.id, expires=duration)
-
-    return {"access_token": token, "token_type": "bearer", "user": user_dict}
+    user_dict_res = {
+        "roles": [user_dict.role_id_1, user_dict.role_id_2, user_dict.role__3],
+        "email": user_dict.email,
+        "name": user_dict.name,
+        "status": user_dict.status
+    }
+    return {"access_token": token, "token_type": "bearer", "user": user_dict_res}
