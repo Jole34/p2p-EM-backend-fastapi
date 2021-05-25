@@ -39,13 +39,13 @@ class CRUDUser():
     def get_user(self, db: Session, email: str, password: str) ->  Optional[models.User]:
         salt = 'str'.encode("ascii")
         password = str(hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000))
-        print(password)
         return db.query(models.User).filter(models.User.email == email, models.User.hashed_password == password).first()
     
     def get_user_email(self, db: Session, email: str) -> Optional[models.User]:
         return db.query(models.User).filter(models.User.email == email).first()     
 
     def get_user_by_id(self, db: Session, id: int) -> Optional[models.User]:
-        return db.query(models.User).filter(models.User.id == id).first()     
+        return db.query(models.User).filter(models.User.id == id).first() 
+            
 user = CRUDUser()
 
