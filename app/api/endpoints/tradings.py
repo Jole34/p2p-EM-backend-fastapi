@@ -94,7 +94,7 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
         crud.trade.create(db, trade)
 
     db.close()
-    return result_constant
+    return {"energy": balance.energy_amount, "money": balance.money_amount, "rate": result_constant}
 
 @router.post('/sell/')
 def sell_energy(user: User = Depends(verify_token), energy_amount: schemas.Energy = None):
@@ -142,8 +142,7 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: schemas.Energ
         
     crud.trade.create(db, trade)
     db.close()
-    return result_constant
-
+    return {"energy": balance.energy_amount, "money": balance.money_amount, "rate": result_constant}
 
 @router.get('/get_all/')
 def get_trading_me(user: User = Depends(verify_token), params: PaginationParams = Depends(), trading_type: str = None):
