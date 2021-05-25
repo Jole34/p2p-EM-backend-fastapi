@@ -11,5 +11,5 @@ class User(Base):
     last_name = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     hashed_password = Column(String, nullable=False)
-    role_id = Column(Integer, ForeignKey(Role.id), nullable=True)
+    role_id = Column(Integer, ForeignKey(Role.id), nullable=False)
     role__ = relationship(Role, foreign_keys=[role_id], uselist=False)

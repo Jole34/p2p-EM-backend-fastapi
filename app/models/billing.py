@@ -6,8 +6,8 @@ from models.user import User
 class Billing(Base):
     __tablename__ = 'billing'
     id = Column(Integer, primary_key=True, index=True, unique=True, nullable=False)
-    money_amount = Column(Float, default=0)
-    energy_amount = Column(Float, default=0)
+    money_amount = Column(Float, default=0, nullable=False)
+    energy_amount = Column(Float, default=0, nullable=False)
     addres = Column(String(255), nullable=False)
     city = Column(String(255), nullable=False)
     country = Column(String(255), nullable=False)
