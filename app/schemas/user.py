@@ -6,17 +6,13 @@ class User(BaseModel):
     last_name: str
     email: EmailStr
     password: str
-    role_id_1: Optional[int] = None
-    role_id_2: Optional[int] = None
-    role_id_3: Optional[int] = None
+    role_id: int
 
 class UserOutput(BaseModel):
     name: str
     last_name: str
     email: EmailStr
-    role_id_1: Optional[int] = None
-    role_id_2: Optional[int] = None
-    role_id_3: Optional[int] = None
+    role_id: int
 
     class Config:
         orm_mode = True

@@ -27,6 +27,5 @@ def get_trading_me(user: User = Depends(verify_token), params: PaginationParams 
     db = SessionLocal()
     query = crud.trade.get_trades_by_user(db, user.id, trading_type)
     db.close()
-    
     trades = paginate(query, params)
     return trades
