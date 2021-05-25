@@ -98,8 +98,8 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
 
 @router.post('/sell/')
 def sell_energy(user: User = Depends(verify_token), energy_amount: schemas.Energy = None):
-    print(energy_amount)
-    if not energy_amount:
+    print(energy_amount.energy_amount)
+    if not energy_amount.energy_amount:
         raise HTTPException(
                 status_code=400,
                 detail="Invalid data, amount is none"
@@ -120,20 +120,20 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: schemas.Energ
                 detail="Invalid data, there is no billing for user"
         )   
     amount = balance.energy_amount
-    if energy_amount > amount:
+    if energy_amount.energy_amount > amount:
             raise HTTPException(
             status_code=400,
             detail="Not enough energy to sell."
     )      
-    balance.energy_amount = balance.energy_amount-energy_amount
-    balance.money_amount = balance.money_amount-energy_amount*result_constant
+    balance.energy_amount = balance.energy_amount-energy_amount.energy_amount
+    balance.money_amount = balance.money_amount-energy_amount.energy_amount*result_constant
     crud.billing.update(db, balance)
     trade = models.Trade(
             description='Sell from energy',
             action='sell',
             trade_type='energy',
-            amount=energy_amount*result_constant,
-            price=energy_amount,
+            amount=energy_amount.energy_amount*result_constant,
+            price=energy_amount.energy_amount,
             moment_balance=result_constant,
             trade_id=str(uuid.uuid1()),
             currency='USD',
