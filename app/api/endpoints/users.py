@@ -21,13 +21,7 @@ def get_user_me(user: User = Depends(verify_token)):
 
 @router.post('/create-user/', response_model=schemas.UserOutput)
 def create_user(user: schemas.User) -> Any:
-        if user.role_id_1 == 0 and user.role_id_2 == 0 and user.role_id_3:
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid role IDS"
-            )              
-
-        if user.role_id_1 > 4  or user.role_id_2 > 4 or user.role_id_3 > 4:
+        if user.role_id> 4:
             raise HTTPException(
                 status_code=400,
                 detail="Invalid role"
