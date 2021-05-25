@@ -183,10 +183,8 @@ def update_energy_balance(user: User = Depends(verify_token), balance: schemas.B
                 status_code=400,
                 detail="Invalid data"
             )
-        if not balance_update.energy_amount:
-            balance_update.energy_amount = balance.energy_amount
-        else:
-            balance_update.energy_amount = balance.energy_amount+balance.energy_amount
+       
+        balance_update.energy_amount = balance.energy_amount+balance_update.energy_amount
         updated = crud.billing.update(db, balance_update)
         db.close()
 
