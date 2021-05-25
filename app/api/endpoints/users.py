@@ -193,4 +193,4 @@ def update_energy_balance(user: User = Depends(verify_token), balance: schemas.B
                 status_code=400,
                 detail="Error while adding balance."
             )
-        return balance.energy_amount
+        return balance_update.energy_amount
