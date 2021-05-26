@@ -64,7 +64,6 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
             user_id=user.id
         )
         crud.trade.create(db, trade)
-        
     else:
         balance = crud.billing.get_balance_by_user_id(db, user.id)
         if not balance:
@@ -77,8 +76,8 @@ def buy_energy(user: User = Depends(verify_token), energy_amount: float = None, 
                 status_code=400,
                 detail="Not enough money."
         )              
-        balance.energy_amount = int(balance.energy_amount+(money_amount/result_constant)*100)/100
-        balance.money_amount = balance.money_amount-money_amount
+        balance.energy_amount = balance.energy_amount+(money_amount/result_constant)
+        balance.money_amount = balance.money_amount -money_amount
         crud.billing.update(db, balance)
         trade = models.Trade(
             description='Buy from money',
