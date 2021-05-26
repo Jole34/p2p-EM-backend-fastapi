@@ -120,7 +120,7 @@ def sell_energy(user: User = Depends(verify_token), energy_amount: schemas.Energ
         )   
     amount = balance.energy_amount
     if energy_amount.energy_amount > amount:
-            raise HTTPException(
+        raise HTTPException(
             status_code=400,
             detail="Not enough energy to sell."
     )      
