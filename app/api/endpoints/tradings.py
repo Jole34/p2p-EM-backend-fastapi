@@ -170,7 +170,7 @@ def get_rate():
         )  
     return result_constant
 
-@router.get('/get_trades/', response_model=schemas.Trade)
+@router.get('/get_trades/')
 def get_trades(params: PaginationParams = Depends()):
     db = SessionLocal()
     trades = paginate(crud.trade.get_all_trades(db), params)
