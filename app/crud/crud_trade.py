@@ -20,7 +20,7 @@ class CRUDTrade():
     def get_trades_by_user(self, db: Session, user_id: int, trading_type: str) -> Optional[models.Trade]:
         return db.query(models.Trade).filter(models.Trade.user_id == user_id, models.Trade.trade_type == trading_type).order_by(models.Trade.created_on.desc())
 
-    def get_all_trades(self, db: Session)-> Optional[Query]:
+    def get_all_trades(self, db: Session):
         return db.query(models.Trade)
 
 trade = CRUDTrade()
