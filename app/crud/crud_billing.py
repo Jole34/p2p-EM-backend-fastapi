@@ -27,8 +27,7 @@ class CRUDBilling():
             db.refresh(db_obj)
             return db_obj
 
-    def update(self, db: Session, obj_in) -> bool:
-        db_obj = obj_in
+    def update(self, db: Session, db_obj: models.Billing) -> bool:
         db.add(db_obj)
         try:
             db.commit()
