@@ -169,3 +169,15 @@ def get_rate():
                 detail="Invalid data"
         )  
     return result_constant
+
+@router.get('/get_trades/', response_model=schemas.Trade)
+def get_trades(params: PaginationParams = Depends()):
+    db = SessionLocal()
+    trades = paginate(crud.trade.get_all_trades(db), params)
+    db.close()
+    if not trades:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid data"
+        )  
+    return trades
