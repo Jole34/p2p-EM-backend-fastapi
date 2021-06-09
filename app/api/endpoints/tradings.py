@@ -181,3 +181,15 @@ def get_trades(params: PaginationParams = Depends()):
             detail="Invalid data"
         )  
     return trades
+
+@router.get('/blockchain_record/{trade_id}', response_model=schemas.BlockchainTrade)
+def get_trade_blc(trade_id: int):
+    db = SessionLocal()
+    trade = crud.trade.get_blockchain_trade(db, trade_id)
+    db.close()
+    if not trade:
+        raise HTTPException(
+            status_code=400,
+            detail="Not found"
+        )  
+    return trade  

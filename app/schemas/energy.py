@@ -15,3 +15,10 @@ class Trade(BaseModel):
     class Config:
         orm_mode = True
 
+class BlockchainTrade(BaseModel):
+    transaction_id: str
+    record_id: str
+
+    class Config:
+        orm_mode = True
+

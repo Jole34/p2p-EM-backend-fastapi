@@ -23,4 +23,7 @@ class CRUDTrade():
     def get_all_trades(self, db: Session):
         return db.query(models.Trade)
 
+    def get_blockchain_trade(self, db: Session, trade_id: int) -> Optional[models.BlockchainTrade]:
+        return db.query(models.BlockchainTrade).filter(models.BlockchainTrade.trade_id == trade_id).first()
+
 trade = CRUDTrade()
